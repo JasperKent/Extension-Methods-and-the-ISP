@@ -1,0 +1,51 @@
+﻿using System;
+using System.Threading.Tasks;
+using TurtleLogic;
+
+namespace TurtleShapes
+{
+    public static class Extensions
+    {
+        public async static Task DrawSquare(this ITurtle turtle, double side)
+        {
+            turtle.Up();
+            await turtle.Move(0.5 - side / 2, 0.5 - side / 2);
+            turtle.Down();
+            await turtle.Move(0.5 - side / 2, 0.5 + side / 2);
+            await turtle.Move(0.5 + side / 2, 0.5 + side / 2);
+            await turtle.Move(0.5 + side / 2, 0.5 - side / 2);
+            await turtle.Move(0.5 - side / 2, 0.5 - side / 2);
+        }
+
+        public async static Task DrawCircle(this ITurtle turtle, double radius)
+        {
+            turtle.Up();
+            await turtle.Move(0.5, 0.5 + radius);
+            turtle.Down();
+
+            for (double theta = 0.0; theta <= 2 * Math.PI; theta += Math.PI / 20)
+                await turtle.Move(0.5 + radius * Math.Sin(theta), 0.5 + radius * Math.Cos(theta));
+        }
+
+        public async static Task DrawLine(this ITurtle turtle)
+        {
+            turtle.Up();
+            await turtle.Move(0.2, 0.5);
+            turtle.Down();
+            await turtle.Move(0.8, 0.5);
+        }
+
+        public async static Task DrawTriangle(this ITurtle turtle, double baseLength)
+        {
+            double height = Math.Cos(Math.PI / 6) * baseLength;
+            double centre = baseLength * Math.Tan(Math.PI / 6) / 2;
+
+            turtle.Up();
+            await turtle.Move(0.5 - baseLength / 2, 0.5 + centre);
+            turtle.Down();
+            await turtle.Move(0.5 + baseLength / 2, 0.5 + centre);
+            await turtle.Move(0.5, 0.5 + centre - height);
+            await turtle.Move(0.5 - baseLength / 2, 0.5 + centre);
+        }
+    }
+}
